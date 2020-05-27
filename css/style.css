@@ -31,7 +31,11 @@ body {
 .resultWindow {
     width: 800px;
     height: 380px;
-    text-align: center;
+    text-align: left;
+    font-size: 50px;
+    padding: 50px;
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 
 .rowDiv {

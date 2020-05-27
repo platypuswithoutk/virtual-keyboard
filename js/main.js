@@ -23,8 +23,6 @@ window.onload = function virtualKeyboard() {
         [{name: "Ctrl", id: "ControlLeft"}, "Win", {name: "Alt", id: "AltLeft"}, " ", {name: "Alt", id: "AltRight"}, {name: "Ctrl", id: "ControlRight"}, {name: "&#8592;", id: 'ArrowLeft'}, {name: "&darr;", id: 'ArrowDown'}, {name: "&rarr;", id: 'ArrowRight'}]
     ]
 
-
-
     for(let i = 0; i < myArray.length; i++) {
         let rowDiv = this.document.createElement('div');
         rowDiv.className = "rowDiv";
@@ -51,12 +49,38 @@ window.onload = function virtualKeyboard() {
             rowDiv.appendChild(rowItem);
         });
     }
+
+    let specialKeysMap = new Map();
+
+    const onEnter = function onEnter() {
+        resultWindow.innerHTML += '\n' ;
+    }
+    specialKeysMap.set('Enter', onEnter);
+
+    const onTab = function onTab() {
+        resultWindow.innerHTML += '\t' ;
+    }
+    specialKeysMap.set('Tab', onTab);
+
+    const onBack = function onBack() {
+        let currentText = resultWindow.innerText;
+        resultWindow.innerHTML = currentText.slice(0, -1);
+    }
+    specialKeysMap.set('Backspace', onBack);
     
     document.addEventListener('keydown', (event) => {
         console.log(event);
         let pushedKey = event.code;
         let keyTile = document.getElementById(pushedKey);
         keyTile.style.backgroundColor = "coral";
+        let text = keyTile.innerText;
+        if (specialKeysMap.has(pushedKey)) {
+            let action = specialKeysMap.get(pushedKey);
+            action();
+        } else {
+            resultWindow.innerHTML += text;
+        }
+        resultWindow.focus();
         event.preventDefault();
     })
 
@@ -67,6 +91,10 @@ window.onload = function virtualKeyboard() {
         keyTile.style.backgroundColor = "lightgoldenrodyellow";
         event.preventDefault();
     })
+
+
+
+    
 
     
 
