@@ -7,17 +7,23 @@ window.onload = function virtualKeyboard() {
     desktop.className="desktop";
     contentDiv.appendChild(desktop);
 
+    let resultWindow = this.document.createElement('div');
+    resultWindow.className="resultWindow";
+    desktop.appendChild(resultWindow);
+
     let keyboard = this.document.createElement('div');
     keyboard.className = "keyboard";
     contentDiv.appendChild(keyboard);
 
     var myArray = [
-        ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace"],
-        ["Tab", "q", "w", "e", "r", "t", "y", "u", "i", "p", "[", "]", "\\", "Del"],
-        ["Caps Lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter"],
-        ["Shift", "\\", "z", "x", "c", "v", "b", "n", "m", ".", ",", "/", "	&uarr;", "Shift"],
-        ["Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "&#8592;", "&darr;", "&rarr;"]
+        ["`", 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "-", "=", "Backspace"],
+        ["Tab", "q", "w", "e", "r", "t", "y", "u", "i", "p", "[", "]", "\\", "Delete"],
+        [{name: "Caps Lock", id: 'CapsLock'}, "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter"],
+        [{name: "Shift", id:"ShiftLeft"}, "\\", "z", "x", "c", "v", "b", "n", "m", ".", ",", "/", {name: "&uarr;", id: 'ArrowUp'}, {name: "Shift", id: "ShiftRight"}],
+        [{name: "Ctrl", id: "ControlLeft"}, "Win", {name: "Alt", id: "AltLeft"}, " ", {name: "Alt", id: "AltRight"}, {name: "Ctrl", id: "ControlRight"}, {name: "&#8592;", id: 'ArrowLeft'}, {name: "&darr;", id: 'ArrowDown'}, {name: "&rarr;", id: 'ArrowRight'}]
     ]
+
+
 
     for(let i = 0; i < myArray.length; i++) {
         let rowDiv = this.document.createElement('div');
@@ -27,28 +33,39 @@ window.onload = function virtualKeyboard() {
         let rowElements = myArray[i];
         rowElements.forEach(element => {
             let rowItem = this.document.createElement('li');
-            rowItem.innerHTML = element;
-            rowItem.id = element;
+            if (typeof element == 'string') {
+                rowItem.innerHTML = element;
+                if(element.length > 1) {
+                    rowItem.id = element;
+                } else {
+                    rowItem.id = `Key`+ element.toUpperCase()
+                }
+                
+            } else if (typeof element == 'number') {
+                rowItem.innerHTML = element;
+                rowItem.id = `Digit` + element;
+            } else {
+                rowItem.innerHTML = element.name;
+                rowItem.id = element.id;
+            }
             rowDiv.appendChild(rowItem);
         });
     }
-
-    let mappedIds = new Map()
-    mappedIds.set('Control', 'Ctrl') 
-    mappedIds.set()
     
-    this.document.body.addEventListener('keydown', (event) => {
-        this.console.log(event);
-        let pushedKey = event.key;
-        let keyTile;
-        if (mappedIds.has(pushedKey)) {
-            keyTile = document.getElementById(mappedIds.get(pushedKey));
-        } else {
-            keyTile = document.getElementById(pushedKey);
-        }
+    document.addEventListener('keydown', (event) => {
+        console.log(event);
+        let pushedKey = event.code;
+        let keyTile = document.getElementById(pushedKey);
         keyTile.style.backgroundColor = "coral";
+        event.preventDefault();
+    })
 
-        let eventCode = event.code;
+    document.addEventListener('keyup', (event) => {
+        console.log(event);
+        let pushedKey = event.code;
+        let keyTile = document.getElementById(pushedKey);
+        keyTile.style.backgroundColor = "lightgoldenrodyellow";
+        event.preventDefault();
     })
 
     

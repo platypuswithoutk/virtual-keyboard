@@ -28,6 +28,12 @@ body {
     border: 10px solid rgb(119, 82, 82);
 }
 
+.resultWindow {
+    width: 800px;
+    height: 380px;
+    text-align: center;
+}
+
 .rowDiv {
     display:flex;
     flex-wrap:wrap;
