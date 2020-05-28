@@ -22,15 +22,17 @@ body {
 
 .keyboard {
     width: 1000px;
-    height: 355px;
+    height: 330px;
     background-color: rgb(235, 222, 197);
     margin: 10px;
     border: 10px solid rgb(119, 82, 82);
 }
 
 textarea {
-    width: 800px;
+    width: 980px;
     height: 380px;
+    background-color: rgb(255, 249, 241);
+    border: 0;
     text-align: left;
     font-size: 50px;
     padding: 50px;
@@ -58,12 +60,22 @@ li {
 }
 
 
-#Backspace, #Tab {
-    width: 107px;
+#Backspace, #Enter {
+    width: 171px;
 }
 
- #Enter {
-    width: 100px;
+#Tab, #Delete, #ControlLeft, #ControlRight, #AltLeft, #AltRight{
+    width: 85px;
 }
 
+#CapsLock{
+    width: 122px;
+}
 
+#ShiftLeft, #ShiftRight{
+    width: 147px;
+}
+
+#Space {
+    width: 382px;
+}
