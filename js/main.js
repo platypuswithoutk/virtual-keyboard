@@ -7,9 +7,8 @@ window.onload = function virtualKeyboard() {
     desktop.className="desktop";
     contentDiv.appendChild(desktop);
 
-    let resultWindow = this.document.createElement('div');
-    resultWindow.className="resultWindow";
-    desktop.appendChild(resultWindow);
+    let resultWindowTextarea = this.document.createElement('textarea');
+    desktop.appendChild(resultWindowTextarea);
 
     let keyboard = this.document.createElement('div');
     keyboard.className = "keyboard";
@@ -17,9 +16,9 @@ window.onload = function virtualKeyboard() {
 
     var myArray = [
         ["`", 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "-", "=", "Backspace"],
-        ["Tab", "q", "w", "e", "r", "t", "y", "u", "i", "p", "[", "]", "\\", "Delete"],
-        [{name: "Caps Lock", id: 'CapsLock'}, "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter"],
-        [{name: "Shift", id:"ShiftLeft"}, "\\", "z", "x", "c", "v", "b", "n", "m", ".", ",", "/", {name: "&uarr;", id: 'ArrowUp'}, {name: "Shift", id: "ShiftRight"}],
+        ["Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\", "Delete"],
+        [{name: "Caps Lock", id: 'CapsLock'}, "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "Enter"],
+        [{name: "Shift", id:"ShiftLeft"}, "\\", "Z", "X", "C", "V", "B", "N", "M", ".", ",", "/", {name: "&uarr;", id: 'ArrowUp'}, {name: "Shift", id: "ShiftRight"}],
         [{name: "Ctrl", id: "ControlLeft"}, "Win", {name: "Alt", id: "AltLeft"}, " ", {name: "Alt", id: "AltRight"}, {name: "Ctrl", id: "ControlRight"}, {name: "&#8592;", id: 'ArrowLeft'}, {name: "&darr;", id: 'ArrowDown'}, {name: "&rarr;", id: 'ArrowRight'}]
     ]
 
@@ -53,20 +52,33 @@ window.onload = function virtualKeyboard() {
     let specialKeysMap = new Map();
 
     const onEnter = function onEnter() {
-        resultWindow.innerHTML += '\n' ;
+        resultWindowTextarea.value += '\n' ;
     }
     specialKeysMap.set('Enter', onEnter);
 
     const onTab = function onTab() {
-        resultWindow.innerHTML += '\t' ;
+        resultWindowTextarea.value += '\t' ;
     }
     specialKeysMap.set('Tab', onTab);
 
     const onBack = function onBack() {
-        let currentText = resultWindow.innerText;
-        resultWindow.innerHTML = currentText.slice(0, -1);
+        let initCursorPosition = resultWindowTextarea.selectionStart;
+        let currentText = resultWindowTextarea.value;
+        resultWindowTextarea.value = currentText.slice(0, resultWindowTextarea.selectionStart-1) + currentText.slice(resultWindowTextarea.selectionStart, currentText.length);
+        resultWindowTextarea.selectionStart = initCursorPosition -1;
+        resultWindowTextarea.selectionEnd = initCursorPosition -1;
     }
     specialKeysMap.set('Backspace', onBack);
+
+    const leftArrow = function leftArrow() {
+        resultWindowTextarea.selectionEnd -= 1;
+    }
+    specialKeysMap.set('ArrowLeft', leftArrow);
+
+    const rightArrow = function rightArrow() {
+        resultWindowTextarea.selectionStart += 1;
+    }
+    specialKeysMap.set('ArrowRight', rightArrow);
     
     document.addEventListener('keydown', (event) => {
         console.log(event);
@@ -78,9 +90,9 @@ window.onload = function virtualKeyboard() {
             let action = specialKeysMap.get(pushedKey);
             action();
         } else {
-            resultWindow.innerHTML += text;
+            resultWindowTextarea.value += text;
         }
-        resultWindow.focus();
+       // resultWindowTextarea.focus();
         event.preventDefault();
     })
 
@@ -91,8 +103,6 @@ window.onload = function virtualKeyboard() {
         keyTile.style.backgroundColor = "lightgoldenrodyellow";
         event.preventDefault();
     })
-
-
 
     
 

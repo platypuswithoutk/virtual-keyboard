@@ -28,7 +28,7 @@ body {
     border: 10px solid rgb(119, 82, 82);
 }
 
-.resultWindow {
+textarea {
     width: 800px;
     height: 380px;
     text-align: left;
@@ -49,8 +49,8 @@ li {
     border: 2px solid black;
     background-color: lightgoldenrodyellow;
     padding: 10px;
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
